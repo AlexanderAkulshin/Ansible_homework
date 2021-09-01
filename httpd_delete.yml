@@ -1,0 +1,14 @@
+---
+- 
+        name: uninstall web service
+        hosts: test1
+        tasks:
+                - 
+                        name: "uninstall httpd"
+                        yum: 
+                                name: httpd
+                                autoremove: yes
+                                state: absent
+...
+
+ 

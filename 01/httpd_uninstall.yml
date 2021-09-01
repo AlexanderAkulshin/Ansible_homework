@@ -1,0 +1,29 @@
+---
+-
+  hosts: test1
+
+  tasks:
+    -
+      name: "uninstall httpd"
+      tags: uninstall
+      yum:
+        name: httpd
+        autoremove: yes
+        state: absent
+    -
+      name: "delete html file"
+      file:
+              path: /var/www/html/index.html
+              state: absent
+      tags: 
+      - file
+    - 
+      name: "close ports"
+      firewalld:
+        service: http
+        permanent: yes
+        state: disabled
+        immediate: yes
+      tags:
+      - ports
+

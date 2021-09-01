@@ -1,0 +1,50 @@
+---
+-
+  hosts: test1
+
+  tasks:
+    -
+      name: "install latest httpd"
+      yum:
+        name: httpd
+        state: latest
+    -
+      name: "start service"
+      service:
+                enabled: true
+                name: httpd
+                state: started
+    -
+      name: "check service"
+      service_facts:
+    - debug:
+            var: ansible_facts.services["httpd.service"]
+    -
+      name: "create html file"
+      lineinfile:
+              path: /var/www/html/index.html
+              line: "Welcome to my web server"
+              create: yes
+      tags: 
+      - addfile
+    -
+      name: "install firewalld"
+      yum:
+        name: firewalld
+        state: latest
+    - 
+      name: "start firewalld"
+      service:
+        name: firewalld
+        state: started
+        enabled: yes      
+    - 
+      name: "open ports"
+      firewalld:
+        service: http
+        permanent: yes
+        state: enabled
+        immediate: yes
+      tags:
+      - ports
+
