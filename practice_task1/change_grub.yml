@@ -4,11 +4,18 @@
 
   tasks:
     -
-      name: "change grub"
+      name: "change grub net.ifnames"
       lineinfile:
         path: /etc/default/grub
-        regexp: 'GRUB_CMDLINE_LINUX='
-        line: 'GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=0 "'
+        regexp: '^net.ifnames'
+        insertafter: 'net.ifnames=0 '
+      notify: write_changes
+    -
+      name: "change grub net.ifnames"
+      lineinfile:
+        path: /etc/default/grub
+        regexp: '^biosdevname'
+        insertafter: 'biosdevname=0 '
       notify: write_changes
   
   handlers:

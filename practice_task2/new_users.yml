@@ -1,0 +1,19 @@
+---
+-
+  hosts: test1
+
+  tasks:
+    - 
+      name: "create new users"
+      user: 
+        name: "{{ item.name }}"
+        comment: "{{ item.email }}"
+        shell: /bin/bash
+        state: present
+        password: "{{ item.password | string | password_hash('sha512', 'newusersalt') }}"
+        home: "{{ item.home }}"
+        create_home: true
+        update_password: on_create
+      loop: "{{ newusers }}"
+      loop_control:
+        label: "{{ item.name }}"
