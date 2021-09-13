@@ -1,7 +1,9 @@
 ---
 - name: install custom facts
   hosts: test1
-  
+  vars:
+    remote_dir: /etc/ansible/facts.d
+    facts_file: localfacts.fact
   tasks:
     - name: create fact directory
       file:

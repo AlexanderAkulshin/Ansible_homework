@@ -5,5 +5,5 @@
   systemd:
     daemon_reload: true
     state: restarted
-    name: httpd
+    name: "{{ ansible_local.localfacts.localfacts.service }}"
     enabled: true
