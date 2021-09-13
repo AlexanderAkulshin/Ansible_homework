@@ -1,0 +1,77 @@
+---
+# tasks file for deploy_vsftpd
+
+- name: install vsftpd
+  package:
+    name: "{{ ftp_package }}"
+    state: present
+
+- name: create vsftpd config with template
+  notify: restart vsftpd
+  template:
+    src: vsftpd.conf.j2
+    dest: /etc/vsftpd/vsftpd.conf
+    mode: 0600
+    owner: root
+    group: root
+
+- name: prerequisites for SELinux
+  package:
+    name:
+      - python3-libsemanage
+      - python3-policycoreutils
+    state: present
+
+- name: enforce SELinux
+  selinux:
+    policy: targeted
+    state: enforcing
+    #state: permissive
+  register: selinux
+
+- name: reboot
+  when: selinux.reboot_required
+  reboot:
+    reboot_timeout: 300
+
+- name: set ftpd_anon_write boolean on
+  seboolean:
+    name: ftpd_anon_write
+    state: yes
+    persistent: yes
+
+- name: start firewalld
+  systemd:
+    state: started
+    name: firewalld
+    enabled: true
+
+- name: open ports
+  firewalld:
+    port: "{{ item }}"
+    permanent: yes
+    state: enabled
+    immediate: yes
+    zone: public
+  loop:
+    - 21/tcp
+    - 20/tcp
+    - "{{ vsftpd_min_port }}-{{ vsftpd_min_port }}/tcp"
+
+- name: create directory
+  file:
+    path: "{{ vsftpd_upload_dir }}"
+    state: directory
+    mode: 0777
+
+- name: set SELinux context
+  sefcontext:
+    target: "{{ vsftpd_upload_dir }}"
+    setype: public_content_rw_t
+    state: present
+
+- name: start vsftpd
+  systemd:
+    state: started
+    name: "{{ ftp_service }}"
+    enabled: true

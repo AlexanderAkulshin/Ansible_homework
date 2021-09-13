@@ -1,0 +1,5 @@
+---
+# defaults file for deploy_vsftpd
+vsftpd_upload_dir: /var/ftp/pub/upload
+vsftpd_min_port: 40900
+vsftpd_max_port: 40999

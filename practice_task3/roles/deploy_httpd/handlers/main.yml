@@ -1,7 +1,7 @@
 ---
 # handlers file for deploy_httpd
 
-- name: Restart httpd service
+- name: restart httpd service
   systemd:
     daemon_reload: true
     state: restarted

@@ -1,0 +1,6 @@
+---
+-
+  hosts: test1
+  become: true
+  roles:
+    - role: deploy_vsftpd

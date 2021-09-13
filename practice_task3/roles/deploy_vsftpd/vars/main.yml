@@ -1,0 +1,5 @@
+---
+# vars file for deploy_vsftpd
+
+ftp_package: vsftpd
+ftp_service: vsftpd

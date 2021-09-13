@@ -1,0 +1,7 @@
+---
+# handlers file for deploy_vsftpd
+- name: restart vsftpd
+  systemd:
+    state: restarted
+    name: "{{ ftp_service }}"
+    enabled: true
