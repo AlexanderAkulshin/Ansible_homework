@@ -1,0 +1,4 @@
+---
+# defaults file for deploy_httpd
+remote_dir: /etc/ansible/facts.d
+facts_file: localfacts.fact

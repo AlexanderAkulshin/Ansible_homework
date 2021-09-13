@@ -1,0 +1,20 @@
+---
+- name: install custom facts
+  hosts: test1
+  
+  tasks:
+    - name: create fact directory
+      file:
+        state: directory
+        recurse: yes
+        path: "{{ remote_dir }}"
+    - name: install facts
+      copy:
+        src: "{{ facts_file }}"
+        dest: "{{ remote_dir }}"
+
+-
+  hosts: test1
+  become: true
+  roles:
+    - role: deploy_httpd

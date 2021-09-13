@@ -1,0 +1,9 @@
+---
+# handlers file for deploy_httpd
+
+- name: Restart httpd service
+  systemd:
+    daemon_reload: true
+    state: restarted
+    name: httpd
+    enabled: true
