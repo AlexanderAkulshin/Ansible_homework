@@ -28,12 +28,12 @@
     -
       name: "install firewalld"
       yum:
-        name: firewalld
+        name: "{{ firewall_service }}"
         state: latest
     - 
       name: "start firewalld"
       service:
-        name: firewalld
+        name: "{{ firewall_service }}"
         state: started
         enabled: yes      
     - 
